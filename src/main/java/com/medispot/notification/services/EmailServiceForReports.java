@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.medispot.notification.models.ScheduledAppointmentDetail;
+import com.medispot.notification.models.PatientDTO;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -18,21 +18,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class EmailService {
+public class EmailServiceForReports {
 	private SendGrid sendGrid;
 	private final String FROM_ADDRESS = "anisha.agarwal1993@gmail.com";
 
 	@Autowired
-	public EmailService(SendGrid sendGrid) {
+	public EmailServiceForReports(SendGrid sendGrid) {
 		this.sendGrid = sendGrid;
 	}
 
-	public void sendMail(ScheduledAppointmentDetail scheduleAppointmentDetail) {
-		Response response = sendEmail(scheduleAppointmentDetail);
+	public void sendMail(PatientDTO patientDto) {
+		Response response = sendEmail(patientDto);
 	}
 
-	private Response sendEmail(ScheduledAppointmentDetail scheduleAppointmentDetail) {
-		Mail mail = getMailData(scheduleAppointmentDetail);
+	private Response sendEmail(PatientDTO patientDto) {
+		Mail mail = getMailData(patientDto);
 		Request request = new Request();
 		Response response = null;
 		try {
@@ -47,18 +47,13 @@ public class EmailService {
 
 	}
 
-	private Mail getMailData(ScheduledAppointmentDetail scheduleAppointmentDetail) {
+	private Mail getMailData(PatientDTO patientDto) {
 		Email from = new Email(FROM_ADDRESS);
-		Email to = new Email(scheduleAppointmentDetail.getEmail());
+		Email to = new Email(patientDto.getEmail());
 		String subject = "Appointment Schedule";
-		Content content = new Content("text/plain",
-				"Hello " + scheduleAppointmentDetail.getName()
-				+ ",\n\nThis is an Email Notification regarding your test appointment with "
-				+ scheduleAppointmentDetail.getTestCenterName() + ".\nYour appointment is scheduled on Date: "
-				+ scheduleAppointmentDetail.getAppointmentDate() + "\nTime: "
-				+ scheduleAppointmentDetail.getAppointmentTime() + "\nIn Test center: "
-				+ scheduleAppointmentDetail.getTestCenterAddress()
-				+ "\n\nThankyou for booking an appointment with us!");
+		Content content = new Content("text/plain", "Hello, " + patientDto.getFirstName() + " "
+				+ patientDto.getLastName()
+				+ "\nThis ia an Email Notification regarding your Test Report Published. \nPlease see your account for details. ");
 
 		Mail mail = new Mail(from, subject, to, content);
 		return mail;
