@@ -53,7 +53,7 @@ public class EmailServiceForReports {
 		String subject = "Appointment Schedule";
 		Content content = new Content("text/plain", "Hello, " + patientDto.getFirstName() + " "
 				+ patientDto.getLastName()
-				+ "\nThis ia an Email Notification regarding your Test Report Published. \nPlease see your account for details. ");
+				+ "\nThis is an Email Notification regarding your Test Report Published. \nPlease see your account for details. ");
 
 		Mail mail = new Mail(from, subject, to, content);
 		return mail;
