@@ -26,10 +26,18 @@ public class ScheduledAppointmentListener {
     static final String QUEUE_NAME = "medispotconnector-scheduled-appointment";
 
     @SqsListener(QUEUE_NAME)
-    public void receive(String message) throws JsonMappingException, JsonProcessingException {
+    public void receive(String message)  {
         System.out.println(message);
-        ScheduledAppointmentDetail scheduleAppointmentDetail = objectMapper.readValue(message,ScheduledAppointmentDetail.class);
-        smsService.sendTextMessage(scheduleAppointmentDetail);
-        emailService.sendMail(scheduleAppointmentDetail);
+        ScheduledAppointmentDetail scheduleAppointmentDetail;
+		try {
+			scheduleAppointmentDetail = objectMapper.readValue(message,ScheduledAppointmentDetail.class);
+			smsService.sendTextMessage(scheduleAppointmentDetail);
+	        emailService.sendMail(scheduleAppointmentDetail);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+        
     }
 }

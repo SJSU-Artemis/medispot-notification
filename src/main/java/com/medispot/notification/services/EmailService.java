@@ -54,9 +54,9 @@ public class EmailService {
 		String subject = "Appointment Schedule";
 		Content content = new Content("text/plain",
 				"Hello " + scheduleAppointmentDetail.getName()
-				+ ",\n\nThis is an Email Notification regarding your test appointment with"
+				+ ",\n\nThis is an Email Notification regarding your test appointment with "
 				+ scheduleAppointmentDetail.getTestCenterName() + ".\nYour appointment is scheduled on Date: "
-				+ scheduleAppointmentDetail.getAppointmentDate() + "Time: "
+				+ scheduleAppointmentDetail.getAppointmentDate() + "\nTime: "
 				+ scheduleAppointmentDetail.getAppointmentTime() + "\nIn Test center: "
 				+ scheduleAppointmentDetail.getTestCenterAddress()
 				+ "\n\nThankyou for booking an appointment with us!");
